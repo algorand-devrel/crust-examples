@@ -1,0 +1,20 @@
+{
+  "name": "crust-examples",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "algokit generate client ../application.json --output src/{contract_name}Client.ts"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@algorandfoundation/algokit-utils": "v5.2.0-beta.4",
+    "algosdk": "^2.7.0",
+    "node-fetch": "^3.3.2",
+    "tweetnacl": "^1.0.3"
+  }
+}
