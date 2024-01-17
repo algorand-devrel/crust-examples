@@ -57,7 +57,9 @@ function getAuthHeader(account: algosdk.Account) {
 }
 
 async function uploadToIPFS(account: algosdk.Account) {
-    const headers = { "Authorization": `Basic ${getAuthHeader(account)}`, "Content-Disposition": `form-data; name="upload_file"; filename="README.md"` }
+    const headers = {
+        "Authorization": `Basic ${getAuthHeader(account)}`
+    }
 
     const response = await fetch('https://gw-seattle.crustcloud.io:443/api/v0/add', {
         method: 'POST',
