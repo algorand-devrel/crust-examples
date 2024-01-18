@@ -34,21 +34,6 @@ async function getAccount(algod: algosdk.Algodv2) {
 }
 
 /**
- * Gets the required price to store a file of a given size
- * 
- * @param algod Algod client to use to simulate the ABI method call
- * @param appClient App client to use to compose the ABI method call
- * @param size Size of the file
- * @param isPermanent Whether the file should be added to the renewal pool
- * @returns Price, in uALGO, to store the file
- */
-async function getPrice(algod: algosdk.Algodv2, appClient: StorageOrderClient, size: number, isPermanent: boolean = false) {
-    const result = await (await appClient.compose().getPrice({ size, is_permanent: isPermanent }).atc()).simulate(algod)
-
-    return result.methodResults[0].returnValue?.valueOf() as number
-}
-
-/**
  * Generate a web3 auth header from an Algorand account
  */
 function getAuthHeader(account: algosdk.Account) {
@@ -62,6 +47,11 @@ function getAuthHeader(account: algosdk.Account) {
     return Buffer.from(authStr).toString('base64')
 }
 
+/**
+ * upload a file to IPFS and get its CID and size
+ * 
+ * @param account Account to use to generate the auth header
+ */
 async function uploadToIPFS(account: algosdk.Account) {
     // Note: Not all gateways require this header
     const headers = {
@@ -88,6 +78,21 @@ async function uploadToIPFS(account: algosdk.Account) {
     const json: { Hash: string, Size: number } = await res.data
 
     return { cid: json.Hash, size: Number(json.Size) }
+}
+
+/**
+ * Gets the required price to store a file of a given size
+ * 
+ * @param algod Algod client to use to simulate the ABI method call
+ * @param appClient App client to use to compose the ABI method call
+ * @param size Size of the file
+ * @param isPermanent Whether the file should be added to the renewal pool
+ * @returns Price, in uALGO, to store the file
+ */
+async function getPrice(algod: algosdk.Algodv2, appClient: StorageOrderClient, size: number, isPermanent: boolean = false) {
+    const result = await (await appClient.compose().getPrice({ size, is_permanent: isPermanent }).atc()).simulate(algod)
+
+    return result.methodResults[0].returnValue?.valueOf() as number
 }
 
 /**
